@@ -1,6 +1,6 @@
-package com.example.demo;
+package com.example.demo.model;
 
-class Usuario {
+public class Usuario {
     private String nome;
     private String cpf;
     private String telefone;
