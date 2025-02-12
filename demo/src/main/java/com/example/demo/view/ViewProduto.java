@@ -1,9 +1,12 @@
 package com.example.demo.view;
 
+import com.example.demo.controller.ProdutoController;
 import com.example.demo.model.Produto;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @SpringBootApplication
 public class ViewProduto {
@@ -18,45 +21,29 @@ public class ViewProduto {
 class ProdutosView {
 
 
-    private Produto p1;
+    ProdutoController pc = new ProdutoController();;
 
     @GetMapping
-    public String getProduto() {
-        if (p1 != null) {
-            return p1.toString();
-        }
-        return "Produto não encontado";
+    public List<Produto> getAllProdutos(){
+        return pc.pegarTodosOsProdutos();
     }
-
     @PostMapping
-    public String postProduto(@RequestBody Produto produto) {
-        p1 = produto;
-        return "Produto criado com sucesso" + p1.toString();
+    public String postNovoProduto(@RequestBody Produto p){
+        pc.inserirNoBanco(p);
+        return "Sucesso";
     }
 
     @PutMapping
-    public String putProduto(@RequestBody Produto produto) {
-        if (p1 == null) {
-           return null;
-        }
-        p1.setNomeProduto(produto.getNomeProduto());
-        p1.setIdProduto(produto.getIdProduto());
-        p1.setPontoDeVenda(produto.getPontoDeVenda());
-        p1.setQuantidade(produto.getQuantidade());
-        p1.setDescricao(produto.getDescricao());
-        p1.setPreco(produto.getPreco());
-        return p1.toString();
+    public String putAtualizaProduto(@RequestBody Produto p) {
+        pc.atualizarNoBanco(p);
+        return "Att Feita";
     }
 
-    @DeleteMapping
-    public String deleteUsuario() {
-        if (p1 != null) {
-            p1 = null;
-            return "produto deletado com sucesso";
-        }
-        return "produto não encontrado";
+        @DeleteMapping
+        public String deleteProduto (@RequestBody Produto p) {
+        pc.deletarNoBanco(p.getIdProduto());
+        return "deletado" + p.getIdProduto();
+
     }
-
-
 }
 
